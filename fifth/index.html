@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>第四章-Node.js 命令行工具（命令行开发） | node学习</title>
+    <meta name="generator" content="VuePress 1.5.2">
+    
+    <meta name="description" content="">
+    <link rel="preload" href="/node_study/assets/css/0.styles.d8fcd520.css" as="style"><link rel="preload" href="/node_study/assets/js/app.7ec7703d.js" as="script"><link rel="preload" href="/node_study/assets/js/2.0b30fde4.js" as="script"><link rel="preload" href="/node_study/assets/js/10.41c910e2.js" as="script"><link rel="prefetch" href="/node_study/assets/js/11.877f2538.js"><link rel="prefetch" href="/node_study/assets/js/12.1dea1fe9.js"><link rel="prefetch" href="/node_study/assets/js/13.03707fd2.js"><link rel="prefetch" href="/node_study/assets/js/14.74174926.js"><link rel="prefetch" href="/node_study/assets/js/15.240f734b.js"><link rel="prefetch" href="/node_study/assets/js/16.3d8565bd.js"><link rel="prefetch" href="/node_study/assets/js/17.7817c8e9.js"><link rel="prefetch" href="/node_study/assets/js/3.e87d396a.js"><link rel="prefetch" href="/node_study/assets/js/4.aa1c6637.js"><link rel="prefetch" href="/node_study/assets/js/5.dc83de53.js"><link rel="prefetch" href="/node_study/assets/js/6.42114519.js"><link rel="prefetch" href="/node_study/assets/js/7.5229d775.js"><link rel="prefetch" href="/node_study/assets/js/8.07f7fc74.js"><link rel="prefetch" href="/node_study/assets/js/9.de1235a9.js">
+    <link rel="stylesheet" href="/node_study/assets/css/0.styles.d8fcd520.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container no-navbar"><!----> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <ul class="sidebar-links"><li><a href="/node_study/" aria-current="page" class="sidebar-link">Home</a></li><li><a href="/node_study/first/" class="sidebar-link">第一章-Node.js技术架构</a></li><li><a href="/node_study/second/" class="sidebar-link">第二章-Node.js文件模块（基础知识）</a></li><li><a href="/node_study/third/" class="sidebar-link">第二章-Node.js文件模块（Node.js）</a></li><li><a href="/node_study/four/" class="sidebar-link">第三章-package</a></li><li><a href="/node_study/fifth/" aria-current="page" class="active sidebar-link">第三章-Node.js命令行工具（命令行开发）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/node_study/fifth/#process-argv" class="sidebar-link">process.argv</a></li><li class="sidebar-sub-header"><a href="/node_study/fifth/#commander-js" class="sidebar-link">commander.js</a></li><li class="sidebar-sub-header"><a href="/node_study/fifth/#简单看源码-eventbus实践" class="sidebar-link">简单看源码-eventBus实践</a></li><li class="sidebar-sub-header"><a href="/node_study/fifth/#ansi控制码控制终端操作" class="sidebar-link">ANSI控制码控制终端操作</a></li><li class="sidebar-sub-header"><a href="/node_study/fifth/#常见的ansi控制码" class="sidebar-link">常见的ANSI控制码</a></li><li class="sidebar-sub-header"><a href="/node_study/fifth/#ansi例子" class="sidebar-link">ANSI例子</a></li><li class="sidebar-sub-header"><a href="/node_study/fifth/#inquirer" class="sidebar-link">inquirer</a></li><li class="sidebar-sub-header"><a href="/node_study/fifth/#npm-相关" class="sidebar-link">npm 相关</a></li></ul></li><li><a href="/node_study/sixth/" class="sidebar-link">第四章-Node.js,jest 测试</a></li><li><a href="/node_study/seventh/" class="sidebar-link">第五章-Node.js,认识V8引擎（基础知识扩展）</a></li><li><a href="/node_study/eighth/" class="sidebar-link">第六章-Node.js,HTTP模块 + path 的两个API</a></li><li><a href="/node_study/ninth/" class="sidebar-link">第七章-Node.js 全局变量</a></li><li><a href="/node_study/tenth/" class="sidebar-link">第八章-Node.js 模块实现 + JS对象小知识点</a></li><li><a href="/node_study/eleventh/" class="sidebar-link">第九章-Node.js DBMS</a></li><li><a href="/node_study/twelve/" class="sidebar-link">第十章-Node.js 流</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="第四章-node-js-命令行工具（命令行开发）"><a href="#第四章-node-js-命令行工具（命令行开发）" class="header-anchor">#</a> 第四章-Node.js 命令行工具（命令行开发）</h1> <h2 id="process-argv"><a href="#process-argv" class="header-anchor">#</a> process.argv</h2> <p>命令行参数可以用系统变量 process.argv 获取.</p> <p>其中process为node进程中的全局变量，process.argv为一数组，数组内存储着命令行的各个部分，argv[0]为node的安装路径，argv[1]为主模块文件路劲，剩下为子命令或参数</p> <h2 id="commander-js"><a href="#commander-js" class="header-anchor">#</a> commander.js</h2> <p>commander.js是TJ所写的一个工具包，其作用是让node命令行程序的制作更加简单。</p> <p>例子：</p> <div class="language-js extra-class"><pre class="language-js"><code>#<span class="token operator">!</span><span class="token operator">/</span>usr<span class="token operator">/</span>bin<span class="token operator">/</span>env node
+<span class="token keyword">const</span> program <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'commander'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token keyword">package</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../package.json'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+program
+  <span class="token punctuation">.</span><span class="token function">version</span><span class="token punctuation">(</span><span class="token keyword">package</span><span class="token punctuation">.</span>version<span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'-f, --foo'</span><span class="token punctuation">,</span> <span class="token string">'enable some foo'</span><span class="token punctuation">)</span>  
+  <span class="token punctuation">.</span><span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'-b, --bar'</span><span class="token punctuation">,</span> <span class="token string">'enable some bar'</span><span class="token punctuation">)</span>  
+  <span class="token punctuation">.</span><span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'-B, --baz'</span><span class="token punctuation">,</span> <span class="token string">'enable some baz'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  program<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'--help'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  
+   console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+   console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Examples:'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+   console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'  $ custom-help --help'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'  $ custom-help -h'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  program<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span>argv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><ul><li>JSON文件不需要显式的export语句。您不需要导出它作为Javascript文件使用。</li></ul> <h2 id="简单看源码-eventbus实践"><a href="#简单看源码-eventbus实践" class="header-anchor">#</a> 简单看源码-eventBus实践</h2> <p>commander.js 源代码中拥有一个 eventBus。</p> <p>当调用 option 时，会在 eventBus 注册一个对应的事件，如下面代码，on里面的具体代码不重要</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token class-name">Command</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">option</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">flags<span class="token punctuation">,</span> description<span class="token punctuation">,</span> fn</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">var</span> self <span class="token operator">=</span> <span class="token keyword">this</span>
+    <span class="token punctuation">,</span> option <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Option</span><span class="token punctuation">(</span>flags<span class="token punctuation">,</span> description<span class="token punctuation">)</span>
+    <span class="token punctuation">,</span> name <span class="token operator">=</span> option<span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// register the option</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>options<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>option<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// when it's passed assign the value</span>
+  <span class="token comment">// and conditionally invoke the callback</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">val</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token comment">// coercion</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">null</span> <span class="token operator">!=</span> val <span class="token operator">&amp;&amp;</span> fn<span class="token punctuation">)</span> val <span class="token operator">=</span> <span class="token function">fn</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// assign value</span>
+    self<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">null</span> <span class="token operator">==</span> val
+      <span class="token operator">?</span> option<span class="token punctuation">.</span>bool
+      <span class="token operator">:</span> val<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>事件名为长命令去掉 -- ，看下面代码，是 Option 构造函数实例上的属性</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token class-name">Option</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">name</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>large
+    <span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token string">'--'</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token string">'no-'</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>一切都基于process.argv</p> <p>当我们输入命令时，执行<code>program.parse(process.argv)</code>，parse函数将会初始化设置默认的 -h 命令</p> <p>之后将 process.argv 传递给 parseOptions 函数，这个函数会遍历 argv 看是否符合之前的 option ，如果符合则 emit</p> <h2 id="ansi控制码控制终端操作"><a href="#ansi控制码控制终端操作" class="header-anchor">#</a> ANSI控制码控制终端操作</h2> <p>原理最重要的一个知识点就是ANSI Escape code。ANSI是一种字符代码，即扩展的ASCII编码。</p> <p>在实际应用中接触比较多的文本编码有3种：ASCII、ANSI和UNICODE，其中ASCII码是后两种也是大多数常用编码的基础。</p> <p>文本编码方式的基础是ASCII码，它是一个7位的编码标准，包括26个小写字母、26个大写字母、10个数字、32个符号、33个控制代码和一个空格，共128个代码。</p> <p>ASCII编码中有些字符是不能用来在终端中打印显示的，比如'\a' 0x7代表响铃，'\n' 0x0A代表换行，这些字符被称为控制符。</p> <p>而其中的一个控制符 '\e' 0x1B比较特殊，这个字符代表 ESC ，即键盘上 ESC 按键的作用。ESC 是单词 escape 的缩写，即逃逸的意思。文本中出现这个控制符，表示接下来的字符是ANSI Escape code编码。</p> <ul><li>\e 代表开始ANSI Escape code</li> <li>[ 代表转义序列开始符 CSI，Control Sequence Introducer</li> <li>31;44;4;1 代表以; 分隔的文本样式控制符，其中 31 代表文本前景色为红色，44代表背景为蓝色，4代表下划线，1代表加粗</li> <li>m 代表结束控制符序列</li> <li>16进制码为 0x1B ， 8 进制码为 033</li></ul> <div class="language-js extra-class"><pre class="language-js"><code>echo <span class="token operator">-</span>e <span class="token string">&quot;\x1b[37;44;4;1mLEO\x1b[0m&quot;</span>
+echo <span class="token operator">-</span>e <span class="token string">&quot;\x1B[37;44;4;1mLEO\x1B[0m&quot;</span>
+echo <span class="token operator">-</span>e <span class="token string">&quot;\033[37;44;4;1mLEO\033[0m&quot;</span>
+</code></pre></div><p>或者用 log 打出来</p> <p><code>echo -e &quot;\e[37;44;4;1mLEO\e[0m&quot;</code>这个也可以但是无法通过log打出。</p> <h2 id="常见的ansi控制码"><a href="#常见的ansi控制码" class="header-anchor">#</a> 常见的ANSI控制码</h2> <p>输出颜色</p> <p>格式: \033[字背景颜色;字体颜色m字符串\033[0m</p> <div class="language- extra-class"><pre class="language-text"><code>背景颜色   字体颜色
+40: 黑    30: 黑 
+41: 红    31: 红 
+42: 绿    32: 绿 
+43: 黄    33: 黄 
+44: 蓝    34: 蓝 
+45: 紫    35: 紫 
+46: 深绿  36: 深绿 
+47: 白色  37: 白色
+</code></pre></div><p>常用字符操作</p> <div class="language- extra-class"><pre class="language-text"><code>\033[0m 关闭所有属性 
+\033[1m 设置高亮度 
+\033[4m 下划线 
+\033[5m 闪烁 
+\033[7m 反显 
+\033[8m 消隐 
+</code></pre></div><p>光标操作</p> <div class="language- extra-class"><pre class="language-text"><code>\033[nA 光标上移n行 
+\033[nB 光标下移n行 
+\033[nC 光标右移n行 
+\033[nD 光标左移n行 
+\033[y;xH设置光标位置 
+\033[K 清除从光标到行尾的内容 
+\033[s 保存光标位置 
+\033[u 恢复光标位置 
+\033[?25l 隐藏光标 
+\033[?25h 显示光标
+</code></pre></div><p>清屏操作</p> <p>\033[2J 清屏</p> <p>指定字符输出到固定位置</p> <p>echo -e &quot;\033[5;5H内容\033[0K&quot;
+注：5H中的5代位置表行数</p> <h2 id="ansi例子"><a href="#ansi例子" class="header-anchor">#</a> ANSI例子</h2> <p>比如说：我先输出内容：</p> <p>abc\n123\n666\nXXX</p> <p>然后我在一秒后再输出：</p> <p>\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2Kcontent</p> <p>最终输出结果就是：</p> <p>（一开始）abc123666XXX</p> <p>（一秒后）abccontent</p> <p>当我们选择好答案按回车之后，会自动把选项收起来，进行下一个问题，它是如何实现重绘的呢？难道它还能把已经输出的流数据收回去？答案已经有了，经过控制码的组合和逻辑的控制，即可实现 inquirer.js 的交互功能。</p> <p>关于为什么 inquirer 会让命令行无法输入，我猜是输出流静默状态，暂未学到，以后会更新</p> <h2 id="inquirer"><a href="#inquirer" class="header-anchor">#</a> inquirer</h2> <div class="language-js extra-class"><pre class="language-js"><code><span class="token string">'use strict'</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> inquirer <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'inquirer'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+inquirer
+  <span class="token punctuation">.</span><span class="token function">prompt</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      type<span class="token operator">:</span> <span class="token string">'list'</span><span class="token punctuation">,</span>
+      name<span class="token operator">:</span> <span class="token string">'action'</span><span class="token punctuation">,</span>
+      message<span class="token operator">:</span> <span class="token string">'你现在想干嘛'</span><span class="token punctuation">,</span>
+      choices<span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">'打代码'</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token class-name">inquirer<span class="token punctuation">.</span>Separator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+          name<span class="token operator">:</span> <span class="token string">'叫个小姐姐上门'</span><span class="token punctuation">,</span>
+          disabled<span class="token operator">:</span> <span class="token string">'不可以!'</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token string">'上厕所'</span><span class="token punctuation">,</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      type<span class="token operator">:</span> <span class="token string">'list'</span><span class="token punctuation">,</span>
+      name<span class="token operator">:</span> <span class="token string">'os'</span><span class="token punctuation">,</span>
+      message<span class="token operator">:</span> <span class="token string">'你打代码的系统是啥'</span><span class="token punctuation">,</span>
+      choices<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'macOS'</span><span class="token punctuation">,</span> <span class="token string">'Windows'</span><span class="token punctuation">,</span> <span class="token string">'Centos'</span><span class="token punctuation">,</span> <span class="token string">'Ubuntu'</span><span class="token punctuation">,</span> <span class="token string">'FreeBSD'</span><span class="token punctuation">,</span> <span class="token string">'Others'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token function-variable function">filter</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">val</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> val<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">answers</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>answers<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">'  '</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre></div><h2 id="npm-相关"><a href="#npm-相关" class="header-anchor">#</a> npm 相关</h2> <p>一个 node.js 模块是基于 CommonJS 模块化规范实现的，严格按照 CommonJS 规范，模块目录下除了必须包含包描述文件 package.json 以外，还需要包含以下目录：</p> <ul><li>bin：存放可执行二进制文件的目录</li> <li>lib：存放js代码的目录</li> <li>doc：存放文档的目录</li> <li>test：存放单元测试用例代码的目录</li></ul> <ol><li><p>先去 npm 注册个账号，然后在命令行使用
+<code>npm adduser #根据提示输入用户名密码即可</code></p></li> <li><p>使用命令发布你的包
+在推送之前，可以通过配置一个 .npmignore 文件来排除一些文件, 防止大量的垃圾文件推送到 npm, 规则上和你用的 .gitignore 是一样的。.gitignore 文件也可以充当 .npmignore 文件
+<code>npm publish</code></p></li> <li><p>发布成功之后，你就可以像下载安装其他包一样使用你自己的开发工具了
+<code>npm install koalanpmstudy</code></p></li></ol> <h3 id="本地调试："><a href="#本地调试：" class="header-anchor">#</a> 本地调试：</h3> <p>在本地开发的模块包的时候，可以使用 npm link 调试，将模块链接到对应的运行项目中去，方便地对模块进行调试和测试。具体使用步骤如下</p> <ol><li><p>假如我的项目是 koalaNpmStudy，假如我的 npm 模块包名称是 npm-ikoala</p></li> <li><p>进入到 模块包 npm-ikoala 目录中，执行 npm link</p></li> <li><p>在自己的项目 koalaNpmStudy 中创建连接执行 npm link npm-ikoala在自己项目的 node_module 中会看到链接过来的模块包，然后就可以像使用其他的模块包一样使用它了。调试结束后可以使用</p></li> <li><p>npm unlink 取消关联</p></li> <li><p>执行 npm link 时输出了这段代码：
+/usr/local/lib/node_modules/link-module -&gt; /Users/shiyou/Desktop/link-module</p></li> <li><p>意思是在公共包管理路径/usr/local/lib/node_modules/连接了本地的link-module包。</p></li> <li><p>因此我们在project-A中执行npm link link-module命令时，它就会去/usr/local/lib/node_modules/这个路径下寻找是否有这个包，如果有就建立软链。</p></li></ol> <h3 id="npm-配置"><a href="#npm-配置" class="header-anchor">#</a> npm 配置</h3> <p>上面讲的都是项目配置，这个话题讲的是npm整体配置。</p> <p>npm cli 提供了 npm config 命令进行 npm 相关配置，通过 npm config ls -l 可查看 npm 的所有配置，包括默认配置。npm 文档页为每个配置项提供了详细的说明 https://docs.npmjs.com/misc/config .</p> <p>修改配置的命令为 <code>npm config set &lt;key&gt; &lt;value&gt;</code>, 我们使用相关的常见重要配置:</p> <ul><li>proxy, https-proxy: 指定 npm 使用的代理</li> <li>registry 指定 npm 下载安装包时的源，默认为 https://registry.npmjs.org/ 可以指定为私有 Registry 源</li> <li>package-lock 指定是否默认生成 package-lock 文件，建议保持默认</li> <li>truesave true/false 指定是否在 npm install 后保存包为 dependencies, npm 5 起默认为 true</li></ul> <p>删除指定的配置项命令为：<code>npm config delete &lt;key&gt;</code></p> <p>这里最常见的一个操作是 npm 太慢，设置淘宝镜像</p> <p><code>npm config set registry https://registry.npm.taobao.org</code></p> <p>恢复使用之前的 npm</p> <p><code>npm config set registry https://registry.npmjs.org</code></p> <p>除了使用 CLI 的 npm config 命令显示更改 npm 配置，还可以通过 npmrc 文件直接修改配置。
+这样的 npmrc 文件优先级由高到低包括：</p> <ul><li>工程内配置文件: /path/to/my/project/.npmrc</li> <li>用户级配置文件: ~/.npmrc</li> <li>全局配置文件: $PREFIX/etc/npmrc (即npm config get globalconfig 输出的路径)</li> <li>npm内置配置文件:/path/to/npm/npmrc</li></ul> <p>在不同的地方创建.npmrc文件即可</p> <div class="custom-block tip"><p class="custom-block-title">TIP</p> <blockquote><p>https://juejin.im/post/5ec27b936fb9a0434745fa70
+https://juejin.im/post/5ddfe970e51d451f8b265c13</p></blockquote></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/node_study/four/" class="prev">
+        第三章-package
+      </a></span> <span class="next"><a href="/node_study/sixth/">
+        第四章-Node.js,jest 测试
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/node_study/assets/js/app.7ec7703d.js" defer></script><script src="/node_study/assets/js/2.0b30fde4.js" defer></script><script src="/node_study/assets/js/10.41c910e2.js" defer></script>
+  </body>
+</html>
